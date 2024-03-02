@@ -19,7 +19,7 @@ squareLen = root.winfo_screenwidth()/100.0
 #CLASSES AND FUNCTIONS
 class Grid:
 
-    global root, canvas
+    global root, canvas, squareLen
     def __init__(self):
         #width and height are in units of squares
         self.width = 100
@@ -39,11 +39,11 @@ grid = Grid()
 
 class Square:
 
-    global root, canvas, color
+    global root, canvas, color, squareLen
     def __init__(self, x, y):
         #width and height are in units of pixels
-        self.xcoor = x * self.length
-        self.ycoor = y * self.length
+        self.xcoor = x * squareLen
+        self.ycoor = y * squareLen
 
     def colorSquare(self):
         #draw square if looked at
