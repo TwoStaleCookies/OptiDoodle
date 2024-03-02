@@ -11,18 +11,19 @@ blink = False
 xcoor = 0
 ycoor = 0
 root = Tk()
+root.attributes('-fullscreen',True)
+canvas = Canvas(root, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
+canvas.pack()  
 squareLen = root.winfo_screenwidth()/100.0
 
 #CLASSES AND FUNCTIONS
 class Grid:
 
+    global root, canvas
     def __init__(self):
         #width and height are in units of squares
         self.width = 100
         self.height = 61
-        root.attributes('-fullscreen',True)
-        canvas = Canvas(root, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
-        canvas.pack()  
 
         self.drawGrid(canvas = canvas)
         root.mainloop()
@@ -37,6 +38,8 @@ class Grid:
 grid = Grid()
 
 class Square:
+
+    global root, canvas, color
     def __init__(self, x, y):
         #width and height are in units of pixels
         self.xcoor = x * self.length
@@ -44,7 +47,7 @@ class Square:
 
     def colorSquare(self):
         #draw square if looked at
-        Canvas.create_rectangle(self.xcoor, self.ycoor, self.xcoor + squareLen, self.ycoor + squareLen, fill=color)
+        canvas.create_rectangle(self.xcoor, self.ycoor, self.xcoor + squareLen, self.ycoor + squareLen, fill=color)
 
 for i in range(grid.height):
     for j in range(grid.width):
@@ -58,7 +61,7 @@ def main(x, y):
     ycoor = y * 62
 
     #color square based on coordinate
-    squares[xcoor][ycoor].colorSquare()
+    squares[ycoor][xcoor].colorSquare()
 
     blink = False #temporary value
     if (blink):
