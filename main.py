@@ -1,18 +1,17 @@
 # Library imports
-import colorsys
 import random
-import draw
 from tkinter import *
 from tkinter.ttk import *
 
 #VARIABLES
 colors = ['F9C6C9', 'F2C6DE', 'DBCDF0', 'C6DEF1', 'C9E4DE', 'FAEDCB', 'F7D9C4', 'E2CFC4', 'D2D2CF']
 squares = []
-color = colorsys.BLACK
+color = 'red'
 blink = False
 xcoor = 0
 ycoor = 0
-squareLen = draw.root.winfo_screenwidth()/100
+root = Tk()
+squareLen = root.winfo_screenwidth()/100.0
 
 #CLASSES AND FUNCTIONS
 class Grid:
@@ -20,14 +19,20 @@ class Grid:
     def __init__(self):
         #width and height are in units of squares
         self.width = 100
-        self.height = 60
+        self.height = 61
+        root.attributes('-fullscreen',True)
+        canvas = Canvas(root, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
+        canvas.pack()  
 
-    def drawGrid(self):
+        self.drawGrid(canvas = canvas)
+        root.mainloop()
+
+    def drawGrid(self, canvas):
         #draw gridlines
         for k in range(self.height):
-            Canvas.create_line(0, k * squareLen, draw.root.winfo_screenwidth(), k * squareLen)
+            canvas.create_line(0, k * squareLen, root.winfo_screenwidth(), k * squareLen)
         for m in range(self.width):
-            Canvas.create_line(m * squareLen, 0, m & squareLen, draw.root.winfo_screenwidth())
+            canvas.create_line(m * squareLen, 0, m * squareLen, root.winfo_screenwidth())
 
 grid = Grid()
 
@@ -46,11 +51,11 @@ for i in range(grid.height):
         squares.append(Square(i, j))
 
 #MAIN CODE
-while True:
+def main(x, y):
     #collect coordinates of eye position
     #1 is temporary value
-    xcoor = 1 / squareLen
-    ycoor = 1 / squareLen
+    xcoor = x * 100
+    ycoor = y * 61
 
     #color square based on coordinate
     for i in range(grid.height):
