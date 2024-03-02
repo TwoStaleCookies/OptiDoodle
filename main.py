@@ -23,7 +23,7 @@ class Grid:
     def __init__(self):
         #width and height are in units of squares
         self.width = 100
-        self.height = 61
+        self.height = 62
 
         self.drawGrid(canvas = canvas)
         root.mainloop()
