@@ -23,7 +23,7 @@ class Grid:
     def __init__(self):
         #width and height are in units of squares
         self.width = 100
-        self.height = 62
+        self.height = 64
 
         self.drawGrid(canvas = canvas)
         root.mainloop()
@@ -58,7 +58,9 @@ def main(x, y):
     #collect coordinates of eye position
     #1 is temporary value
     xcoor = x * 100
-    ycoor = y * 62
+    ycoor = y * 64
+    xcoor = round(xcoor, 0)
+    ycoor = round(ycoor, 0)
 
     #color square based on coordinate
     squares[ycoor][xcoor].colorSquare()
