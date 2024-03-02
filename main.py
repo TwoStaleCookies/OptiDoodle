@@ -42,7 +42,7 @@ class Square:
         self.xcoor = x * self.length
         self.ycoor = y * self.length
 
-    def colorSquare(self, xcoor, ycoor):
+    def colorSquare(self):
         #draw square if looked at
         Canvas.create_rectangle(self.xcoor, self.ycoor, self.xcoor + squareLen, self.ycoor + squareLen, fill=color)
 
@@ -55,14 +55,10 @@ def main(x, y):
     #collect coordinates of eye position
     #1 is temporary value
     xcoor = x * 100
-    ycoor = y * 61
+    ycoor = y * 62
 
     #color square based on coordinate
-    for i in range(grid.height):
-        for j in range(grid.width):
-            sq = squares[i][j]
-            if (xcoor == sq.xcoor and ycoor == sq.ycoor):
-                sq.colorSquare(xcoor, ycoor)
+    squares[xcoor][ycoor].colorSquare()
 
     blink = False #temporary value
     if (blink):
