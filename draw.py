@@ -2,13 +2,13 @@ from tkinter import *
 
 root = Tk()
 
-root.geometry("500x500")
+#root.geometry("500x500")
+root.attributes('-fullscreen',True)
 
-canvas = Canvas(root, width=500, height=500)
+canvas = Canvas(root, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
 canvas.pack()
 
-canvas.create_line(100,200,200,35, fill="green", width=5)
-
+canvas.create_rectangle(0, 0, root.winfo_screenwidth(), root.winfo_screenheight(), fill='red')
 
 root.mainloop()
 
