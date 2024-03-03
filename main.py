@@ -1,11 +1,23 @@
 # Library imports
 import random
 import pygame 
+import tobii_research as tr
+import time
+import numpy as np
+
+found_eyetrackers = tr.find_all_eyetrackers()
+my_eyetracker = found_eyetrackers[0]
+print("Address : " + my_eyetracker.address)
+print("Model: " + my_eyetracker.model)
+print("Name: "+ my_eyetracker.device_name)
+print("Serial number: " + my_eyetracker.serial_number)
+
+
 
 #VARIABLES
-colors = ['F9C6C9', 'F2C6DE', 'DBCDF0', 'C6DEF1', 'C9E4DE', 'FAEDCB', 'F7D9C4', 'E2CFC4', 'D2D2CF']
+colors = ['#F9C6C9', '#F2C6DE', '#DBCDF0', '#C6DEF1', '#C9E4DE', '#FAEDCB', '#F7D9C4', '#E2CFC4', '#D2D2CF']
 squares = []
-color = 'red'
+color = colors[0]
 # blink = False
 # root = Tk()
 # root.attributes('-fullscreen',True)
@@ -59,6 +71,7 @@ for i in range(grid.height):
 
 #MAIN CODE
 def main(x, y):
+    print(x, y)
     global root, canvas, color, squareLen
     #collect coordinates of eye position
     #1 is temporary value
@@ -71,13 +84,32 @@ def main(x, y):
     #squares[ycoor][xcoor].colorSquare()
     #canvas.create_rectangle(xcoor, ycoor, xcoor + 30, ycoor + 30, fill='red')
     #canvas.create_rectangle(xcoor, ycoor, xcoor + squareLen, ycoor + squareLen, fill='red')
-    pygame.draw.rect(DISPLAY, 'red', pygame.Rect(xcoor, ycoor, squareLen, squareLen))
+    pygame.draw.rect(DISPLAY, color, pygame.Rect(xcoor, ycoor, squareLen, squareLen))
 
-    blink = False #temporary value
-    if (blink):
-        color = colors[random.randint(0,len(colors))]
-        blink = False
+    #blink = False #temporary value
+    
     pygame.display.flip()
 
-main(0.5, 0.5)
-main(0.4, 0.4)
+def blink():
+    global color, colors
+    color = colors[random.randint(0,len(colors))]
+
+
+#track gaze data
+def gaze_data_callback(gaze_data):
+    global blink
+     #print("Left eye: ({gaze_le}) \t Right eye: ({gaze_re})".format(
+      #   gaze_le = gaze_data['left_gaze_point_on_display_area'],
+      #   gaze_re = gaze_data['right_gaze_point_on_display_area']
+    # ))
+    #print(gaze_data['left_gaze_point_on_display_area'], gaze_data['right_gaze_point_on_display_area'])
+    x1, y1 = gaze_data['left_gaze_point_on_display_area']
+    x2, y2 = gaze_data['right_gaze_point_on_display_area']
+    if np.isnan(x1 and x2):
+        blink()
+    main(x = (x1+x2)/2, y = (y1+y2)/2)
+
+
+my_eyetracker.subscribe_to(tr.EYETRACKER_GAZE_DATA, gaze_data_callback, as_dictionary = True) #start tracking
+time.sleep(10) #5 seconds of tracking
+my_eyetracker.unsubscribe_from(tr.EYETRACKER_GAZE_DATA, gaze_data_callback) #stop tracking
