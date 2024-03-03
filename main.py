@@ -8,8 +8,6 @@ colors = ['F9C6C9', 'F2C6DE', 'DBCDF0', 'C6DEF1', 'C9E4DE', 'FAEDCB', 'F7D9C4', 
 squares = []
 color = 'red'
 blink = False
-xcoor = 0
-ycoor = 0
 root = Tk()
 root.attributes('-fullscreen',True)
 canvas = Canvas(root, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
@@ -47,7 +45,7 @@ class Square:
 
     def colorSquare(self):
         #draw square if looked at
-        canvas.create_rectangle(self.xcoor, self.ycoor, self.xcoor + squareLen, self.ycoor + squareLen, fill=color)
+        canvas.create_rectangle(self.xcoor, self.ycoor, self.xcoor + squareLen, self.ycoor + squareLen, fill='red')
 
 for i in range(grid.height):
     for j in range(grid.width):
@@ -55,17 +53,22 @@ for i in range(grid.height):
 
 #MAIN CODE
 def main(x, y):
+    global root, canvas, color, squareLen
     #collect coordinates of eye position
     #1 is temporary value
-    xcoor = x * 100
-    ycoor = y * 64
+    xcoor = x * 100 * squareLen
+    ycoor = y * 64 * squareLen
     xcoor = round(xcoor, 0)
     ycoor = round(ycoor, 0)
 
     #color square based on coordinate
-    squares[ycoor][xcoor].colorSquare()
+    #squares[ycoor][xcoor].colorSquare()
+    #canvas.create_rectangle(xcoor, ycoor, xcoor + 30, ycoor + 30, fill='red')
+    canvas.create_rectangle(xcoor, ycoor, xcoor + squareLen, ycoor + squareLen, fill='red')
 
     blink = False #temporary value
     if (blink):
         color = colors[random.randint(0,len(colors))]
         blink = False
+    root.mainloop()
+
